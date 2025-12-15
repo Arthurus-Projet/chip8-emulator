@@ -23,7 +23,14 @@ class Chip8 {
 
         std::array<uint8_t, 16> keys; // 16 inputs
 
-        
+    public:
+
+    Chip8();
+    void loadROM(const char* filename);
+    void cycle();
+
+    const std::array<uint8_t, 64 * 32>& getDisplay() const { return display; }
+    
 
 
 
