@@ -1,5 +1,7 @@
 #include "Headers/Chip8.hpp"
-
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 
 
@@ -52,7 +54,35 @@ Chip8::Chip8() {
     */
     
     std::copy(fontset.begin(), fontset.end(), memory.begin() + 0x50);
+    // 0x50 = 80  ==>  memory[80] = 0xF0
 
+
+    
+
+
+
+
+    }
+
+
+
+void Chip8::loadROM(const char* filename) {
+
+
+    std::ifstream file(filename, std::ios::binary);
+
+    if (!file) {
+        std::cerr << "Opening error \n";
+    }
+
+    
+  
+    std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});
+
+    std::copy(x.begin(), x.end(), memory.begin() + 0x200);
+    
+
+    file.close();
 
 
 }
