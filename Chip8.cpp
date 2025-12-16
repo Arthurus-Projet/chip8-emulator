@@ -96,13 +96,23 @@ void Chip8::cycle() {
     uint16_t opcode = (memory[PC] << 8 | memory[PC + 1]);
     PC += 2;
 
+    /* 
+    ------------------------------------
+    X for what register use (4 bits)
+    Y seond register (4 bits)
+    N can be a sprite heights (4 bits)
+    NN value (1 byte)
+    NNN memory adress (12 bits)
+    ------------------------------------
+    */
+
     uint8_t X = (opcode >> 8) & 0xF;
     uint8_t Y = (opcode >> 4) & 0xF;
     uint8_t N = opcode & 0xF;  // 0xF = 15 = 1111
     uint8_t NN = opcode & 0xFF; // 0xFF = 255 = 1111 1111
     uint16_t NNN = opcode & 0xFFF; // 0xFFF = 4095 = 1111 1111 1111
 
-    
+
 }
 
 
