@@ -94,17 +94,15 @@ void Chip8::loadROM(const char* filename) {
 void Chip8::cycle() {
 
     uint16_t opcode = (memory[PC] << 8 | memory[PC + 1]);
-
     PC += 2;
 
-    uint8_t X = (opcode >> 8) & 15;
-    uint8_t Y = (opcode >> 4) & 15;
-    uint8_t N = (opcode) & 15;
-    uint8_t NN = (opcode) & 0xFF;
-    uint16_t NNN = (opcode) & 4095;
+    uint8_t X = (opcode >> 8) & 0xF;
+    uint8_t Y = (opcode >> 4) & 0xF;
+    uint8_t N = opcode & 0xF;  // 0xF = 15 = 1111
+    uint8_t NN = opcode & 0xFF; // 0xFF = 255 = 1111 1111
+    uint16_t NNN = opcode & 0xFFF; // 0xFFF = 4095 = 1111 1111 1111
 
-
-
+    
 }
 
 
