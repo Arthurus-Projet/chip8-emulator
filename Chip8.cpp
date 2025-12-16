@@ -73,16 +73,36 @@ void Chip8::loadROM(const char* filename) {
 
     if (!file) {
         std::cerr << "Opening error \n";
+        return;
     }
 
-    
-  
-    std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});
+    std::vector<uint8_t> buffer(
+        std::istreambuf_iterator<char>(file), 
+        {}
+    );
 
-    std::copy(x.begin(), x.end(), memory.begin() + 0x200);
-    
+    if (buffer.size() > 3584) {
+        std::cerr << "ROM too big ! \n";
+        return;
+        }
 
+    std::copy(buffer.begin(), buffer.end(), memory.begin() + 0x200);
+    
     file.close();
+}
+
+void Chip8::cycle() {
+
+    uint16_t opcode = (memory[PC] << 8 | memory[PC + 1]);
+
+    PC += 2;
+
+    uint8_t X = (opcode >> 8) & 15;
+    uint8_t Y = (opcode >> 4) & 15;
+    uint8_t N = (opcode) & 15;
+    uint8_t NN = (opcode) & 0xFF;
+    uint16_t NNN = (opcode) & 4095;
+
 
 
 }
