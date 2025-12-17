@@ -112,6 +112,21 @@ void Chip8::cycle() {
     uint8_t NN = opcode & 0xFF; // 0xFF = 255 = 1111 1111
     uint16_t NNN = opcode & 0xFFF; // 0xFFF = 4095 = 1111 1111 1111
 
+    switch (opcode & 0xF000) {  // first nibble (instruction type)
+    case 0x0000:
+        // 00E0 and 00EE
+        if (opcode == 0x00E0) {
+            display.fill(0);
+        } else 
+            if (opcode == 0x00EE) {
+                
+                PC =  stack.top();
+                stack.pop();
+            }
+
+        break;
+
+    }
 
 }
 
