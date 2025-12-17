@@ -13,6 +13,7 @@ class Chip8 {
         uint16_t I; // Index register
         uint16_t PC; // Program Counter
 
+        // The stack is used to store return addresses during subroutine calls
         std::stack<uint16_t> stack;
 
         // 8-bit which automatically decrements at 60 Hz (60 times per second) until reaching zero:
