@@ -96,15 +96,15 @@ void Chip8::cycle() {
     uint16_t opcode = (memory[PC] << 8 | memory[PC + 1]);
     PC += 2;
 
-    /* 
-    ------------------------------------
-    X for what register use (4 bits)
-    Y seond register (4 bits)
-    N can be a sprite heights (4 bits)
-    NN value (1 byte)
-    NNN memory adress (12 bits)
-    ------------------------------------
-    */
+/* 
+    ---------------------------------------
+    | X for what register use (4 bits)    |
+    | Y seond register (4 bits)           |
+    | N can be a sprite heights (4 bits)  |
+    | NN value (1 byte)                   |
+    | NNN memory adress (12 bits)         |
+    ---------------------------------------
+*/
 
     uint8_t X = (opcode >> 8) & 0xF;
     uint8_t Y = (opcode >> 4) & 0xF;
@@ -119,13 +119,14 @@ void Chip8::cycle() {
             display.fill(0);
         } else 
             if (opcode == 0x00EE) {
-                
                 PC =  stack.top();
                 stack.pop();
             }
 
         break;
-
+    case 0x1000:     
+        PC = NNN;
+        break;
     }
 
 }
