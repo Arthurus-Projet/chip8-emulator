@@ -127,7 +127,13 @@ void Chip8::cycle() {
     case 0x1000:     
         PC = NNN;
         break;
-    }
+    case 0x6000:
+        V[X] = NN;
+   
+    case 0x7000:
+        V[X] += NN;  
+        break;
+     }
 
 }
 
