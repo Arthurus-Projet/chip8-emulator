@@ -142,6 +142,10 @@ void Chip8::cycle() {
         if (V[X] == NN)
             PC += 2;
         break;
+    case 0x4000:
+        if (V[X] != NN) 
+            PC += 2;
+        break;
 
      }
 
