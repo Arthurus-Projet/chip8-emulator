@@ -138,6 +138,11 @@ void Chip8::cycle() {
         stack.push(PC);
         PC = NNN;
         break;
+    case 0x3000:
+        if (V[X] == NN)
+            PC += 2;
+        break;
+
      }
 
 }
