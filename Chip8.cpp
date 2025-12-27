@@ -129,9 +129,14 @@ void Chip8::cycle() {
         break;
     case 0x6000:
         V[X] = NN;
+        break;
    
     case 0x7000:
         V[X] += NN;  
+        break;
+    case 0x2000:
+        stack.push(PC);
+        PC = NNN;
         break;
      }
 
