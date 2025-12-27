@@ -149,6 +149,10 @@ void Chip8::cycle() {
     case 0xA000:
         I = NNN;
         break;
+    case 0x5000:
+        if (V[X] == V[Y])
+            PC += 2; // Skip next instruction
+        break;
      }
 
 }
