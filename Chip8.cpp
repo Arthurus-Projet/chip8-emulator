@@ -153,8 +153,12 @@ void Chip8::cycle() {
         if (V[X] == V[Y])
             PC += 2; // Skip next instruction
         break;
+    case 0x9000:
+        if (V[X] != V[Y])
+            PC += 2;
+        break;
      }
-
+  
 }
 
 
