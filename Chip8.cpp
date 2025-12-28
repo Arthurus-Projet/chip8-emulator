@@ -226,8 +226,56 @@ void Chip8::cycle() {
 
 
         }
+        break;
+
+    case 0xE000:
+        switch(opcode & 0xFF) {
+            case 0x9E:
+                if (keys[V[X]] == 1)
+                    PC += 2;
+                break;
+            case 0xA1:
+                if (keys[V[X]] == 0)
+                    PC += 2;
+                break;
+        }
+        break;
+
+    case 0xF000:
+        switch(opcode & 0xFF) {
+            case 0x07:
+                V[X] = delayTimer;
+                break;
+            case 0x15:
+                delayTimer = V[X];
+                break;
+            case 0x18:
+                soundTimer = V[X];
+                break;
+            case 0x1E:
+                I += V[X];
+                break;
+            case 0x29:
+                I = 0x50 + V[X] * 5;
+                break;
+            case 0x33: // BCD -> Binary Coded Decimal
+                memory[I] = V[X] / 100;
+                memory[I + 1] = V[X] / 10 % 10;
+                memory[I + 2] = V[X] % 10;
+                break;
             
-     }
+            
+
+
+
+                
+        }
+        break;
+
+
+
+            
+     } // end of the switch
   
 }
 
