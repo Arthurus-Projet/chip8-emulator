@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <random>
 
 
 
@@ -157,6 +158,75 @@ void Chip8::cycle() {
         if (V[X] != V[Y])
             PC += 2;
         break;
+    case 0xB000:
+        PC = NNN + V[0];
+
+    case 0XC000:
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> dist(0, 255);
+
+        int random_byte = dist(gen);
+        V[X] = random_byte & NN;
+        break;
+    case 0X8000:
+
+        switch(opcode & 0xF) {
+            case 0x0:
+                V[X] = V[Y];
+                break;
+            case 0x1:
+                V[X] = V[X] | V[Y];
+                break;
+            case 0x2:
+                V[X] = V[X] & V[Y];
+                break;
+            case 0x3:
+                V[X] = V[X] ^ V[Y];
+                break;
+            case 0x4:
+                uint16_t sum_ = V[X] + V[Y];
+             
+                if (sum_ > 255)
+                    V[15] = 1;
+                else 
+                    V[15] = 0;
+                V[X] = sum_ & 0xFF;
+                break;
+            case 0x5:
+                
+                if (V[X] > V[Y])
+                    V[15] = 1;
+                else 
+                    V[15] = 0;
+                V[X] -= V[Y];
+                break;
+            case 0x6:
+                
+                if (V[X] & 1)
+                    V[15] = 1;
+                else 
+                    V[15] = 0;
+                V[X] >>= 1;
+                break;
+            case 0x7:
+                if (V[Y] > V[X])
+                    V[15] = 1;
+                else 
+                    V[15] = 0;
+                V[X] = V[Y] - V[X];
+                break;  
+            case 0xE:
+                if ( (V[X] >> 7) & 1)
+                    V[15] = 1;
+                else 
+                    V[15] = 0;
+                V[X] <<= 1;
+                break;  
+
+
+        }
+            
      }
   
 }
