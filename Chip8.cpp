@@ -263,19 +263,39 @@ void Chip8::cycle() {
                 memory[I + 1] = V[X] / 10 % 10;
                 memory[I + 2] = V[X] % 10;
                 break;
-            
-            
+            case 0x55:
+                for (int i = 0; i <= X; ++i) 
+                    memory [I + i] = V[i];
+                    
+                break;
+            case 0x65:
+                for (int i = 0; i <= X; ++i) 
+                    V[i] = memory[I + i];
+                    
+                break;
+            case 0x0A:
+                bool isPress = false;
+                for (int i = 0; i < 16; ++i) {
+                    if (keys[i] == 1) {
+                        isPress = true;
+                        V[X] = i;
+                        break;
+                    }
+                }
 
+                if (!isPress) 
+                    PC -= 2;
 
+                break;
 
                 
-        }
+        } // End of the switch
         break;
 
 
 
             
-     } // end of the switch
+     } // End of the switch
   
 }
 
