@@ -292,6 +292,43 @@ void Chip8::cycle() {
         } // End of the switch
         break;
 
+        case 0xD000:
+            V[15] = 0;  // Reset collision flag
+            
+            // N = number of lines (rows) of the sprite to draw.
+            // V[X]: horizontal position (starting column, 0-63)
+            // V[Y]: vertical position (starting line, 0-31)
+            for (int row = 0; row < N; row++) {           // For each sprite row
+                uint8_t spriteData = memory[I + row];      // Read 1 byte of sprite data
+                
+                /*
+                memory[I]     = 0xF0 = 11110000 = ####....
+                memory[I+1]   = 0x90 = 10010000 = #..#....
+                memory[I+2]   = 0x90 = 10010000 = #..#....
+                memory[I+3]   = 0x90 = 10010000 = #..#....
+                memory[I+4]   = 0xF0 = 11110000 = ####....
+                */
+                for (int col = 0; col < 8; col++) {        // For each bit (pixel)
+                    // If the bit is set to 1 in the sprite
+                    // 0x80 = 1000 0000
+                    if ((spriteData & (0x80 >> col)) != 0) {
+                        // Calculate position in display
+                        int x = (V[X] + col) % 64;
+                        int y = (V[Y] + row) % 32;
+                        int index = y * 64 + x;
+                        
+                        // Collision detection before XOR
+                        if (display[index] == 1) {
+                            V[15] = 1;
+                        }
+                        
+                        // XOR the pixel
+                        display[index] ^= 1;
+                    }
+                }
+            }
+            break;
+
 
 
             
