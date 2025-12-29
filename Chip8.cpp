@@ -160,8 +160,9 @@ void Chip8::cycle() {
         break;
     case 0xB000:
         PC = NNN + V[0];
+        break;
 
-    case 0XC000:
+    case 0XC000: {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dist(0, 255);
@@ -169,6 +170,7 @@ void Chip8::cycle() {
         int random_byte = dist(gen);
         V[X] = random_byte & NN;
         break;
+    }
     case 0X8000:
 
         switch(opcode & 0xF) {
@@ -184,7 +186,7 @@ void Chip8::cycle() {
             case 0x3:
                 V[X] = V[X] ^ V[Y];
                 break;
-            case 0x4:
+            case 0x4: {
                 uint16_t sum_ = V[X] + V[Y];
              
                 if (sum_ > 255)
@@ -193,6 +195,7 @@ void Chip8::cycle() {
                     V[15] = 0;
                 V[X] = sum_ & 0xFF;
                 break;
+            }
             case 0x5:
                 
                 if (V[X] > V[Y])
@@ -273,7 +276,7 @@ void Chip8::cycle() {
                     V[i] = memory[I + i];
                     
                 break;
-            case 0x0A:
+            case 0x0A: {
                 bool isPress = false;
                 for (int i = 0; i < 16; ++i) {
                     if (keys[i] == 1) {
@@ -287,6 +290,7 @@ void Chip8::cycle() {
                     PC -= 2;
 
                 break;
+            }
 
                 
         } // End of the switch
