@@ -38,6 +38,8 @@ class Chip8 {
         if (soundTimer > 0) soundTimer--;
     }
 
+    uint8_t getSoundTimer() const { return soundTimer; }
+
 
 
 };

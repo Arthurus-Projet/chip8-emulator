@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <bitset>
 #include <iostream>
 #include "Headers/Chip8.hpp"
@@ -10,17 +11,27 @@ int main() {
 
     std::cout << "start" << std::endl;
 
-    //chip8.loadROM("roms/danm8ku.ch8");
-    //chip8.loadROM("roms/2-ibm-logo.ch8");
-    chip8.loadROM("roms/Airplane.ch8");
-
-
     
-
+    //chip8.loadROM("roms/2-ibm-logo.ch8");
+    //chip8.loadROM("roms/Airplane.ch8");
+    //chip8.loadROM("roms/glitchGhost.ch8");
+    //chip8.loadROM("roms/Tetris [Fran Dachille, 1991].ch8");
+    //chip8.loadROM("roms/Pong (1 player).ch8");
+    chip8.loadROM("roms/Space Invaders.ch8");
+    
     const int SCALE = 10;
 
     sf::RenderWindow window(sf::VideoMode(64 * SCALE, 32 * SCALE), "Chip8 Emulator");
     window.setFramerateLimit(60); 
+
+    sf::SoundBuffer beepBuffer;
+    if (!beepBuffer.loadFromFile("sound-effects/beep.wav")) {
+        std::cerr << "Can't load beep.wav" << std::endl;
+    }
+
+    sf::Sound beepSound;
+    beepSound.setBuffer(beepBuffer);
+    beepSound.setLoop(true);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -59,6 +70,14 @@ int main() {
         }
 
         chip8.updateTimers();
+
+        if (chip8.getSoundTimer() > 0) {
+            if (beepSound.getStatus() != sf::Sound::Playing) {
+                beepSound.play();
+            }
+        } else {
+            beepSound.stop();
+        }
 
         
         static int frameCount = 0;
