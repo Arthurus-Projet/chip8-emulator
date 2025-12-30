@@ -95,6 +95,14 @@ void Chip8::loadROM(const char* filename) {
 void Chip8::cycle() {
 
     uint16_t opcode = (memory[PC] << 8 | memory[PC + 1]);
+
+    if (PC == 0x308) {
+        std::cout << "At PC=0x308, opcode is: 0x" << std::hex << opcode << std::dec << std::endl;
+        std::cout << "First nibble: 0x" << std::hex << (opcode & 0xF000) << std::dec << std::endl;
+        std::cout << "Last byte: 0x" << std::hex << (opcode & 0xFF) << std::dec << std::endl;
+    }
+    
+
     PC += 2;
 
 /* 
@@ -269,26 +277,28 @@ void Chip8::cycle() {
             case 0x55:
                 for (int i = 0; i <= X; ++i) 
                     memory [I + i] = V[i];
+                I += X + 1;
                     
                 break;
             case 0x65:
                 for (int i = 0; i <= X; ++i) 
                     V[i] = memory[I + i];
-                    
+                I += X + 1;
                 break;
             case 0x0A: {
-                bool isPress = false;
+               
+                bool anyKeyPressed = false;
                 for (int i = 0; i < 16; ++i) {
                     if (keys[i] == 1) {
-                        isPress = true;
+                        std::cout << "Key " << i << " detected!" << std::endl;
                         V[X] = i;
+                        anyKeyPressed = true;
                         break;
                     }
                 }
-
-                if (!isPress) 
+                if (!anyKeyPressed) 
                     PC -= 2;
-
+                
                 break;
             }
 

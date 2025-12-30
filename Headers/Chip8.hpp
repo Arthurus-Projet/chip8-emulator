@@ -23,7 +23,7 @@ class Chip8 {
         std::array<uint8_t, 64 * 32> display;
 
         std::array<uint8_t, 16> keys; // 16 inputs
-
+ 
     public:
 
     Chip8();
@@ -31,9 +31,12 @@ class Chip8 {
     void cycle();
 
     const std::array<uint8_t, 64 * 32>& getDisplay() const { return display; }
-    
-
-
+    uint16_t getPC() const { return PC; }  
+    void setKey(uint8_t key, uint8_t value) { keys[key] = value; }
+    void updateTimers() {
+        if (delayTimer > 0) delayTimer--;
+        if (soundTimer > 0) soundTimer--;
+    }
 
 
 
