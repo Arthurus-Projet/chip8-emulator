@@ -33,18 +33,29 @@ int main() {
     beepSound.setBuffer(beepBuffer);
     beepSound.setLoop(true);
 
+    bool paused = false;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+        
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::P) {
+                    paused = !paused;
+                    std::cout << (paused ? "PAUSED" : "RESUMED") << std::endl;
+                }
+            }
         }
 
         for (int i = 0; i < 16; i++) {
-            chip8.setKey(i, 0);
+                chip8.setKey(i, 0);
         }
 
         
+        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) paused = !paused;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) chip8.setKey(0x1, 1);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) chip8.setKey(0x2, 1);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) chip8.setKey(0x3, 1);
@@ -65,18 +76,22 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) chip8.setKey(0xB, 1);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) chip8.setKey(0xF, 1);
 
-        for (int i = 0; i < 7; i++) {
-            chip8.cycle();
-        }
-
-        chip8.updateTimers();
-
-        if (chip8.getSoundTimer() > 0) {
-            if (beepSound.getStatus() != sf::Sound::Playing) {
-                beepSound.play();
+        if (!paused) {
+            for (int i = 0; i < 7; i++) {
+                chip8.cycle();
             }
-        } else {
-            beepSound.stop();
+            //std::cout << "paused: " << paused << std::endl;
+
+            chip8.updateTimers();
+
+            if (chip8.getSoundTimer() > 0) {
+                if (beepSound.getStatus() != sf::Sound::Playing) {
+                    beepSound.play();
+                }
+            } else {
+                beepSound.stop();
+            }
+
         }
 
         
@@ -101,6 +116,9 @@ int main() {
 
             }
         }
+
+
+        
 
 
 
